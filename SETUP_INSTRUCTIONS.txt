@@ -1,0 +1,110 @@
+=============================================
+HƯỚNG DẪN SETUP PROJECT CHO NGƯỜI MỚI
+=============================================
+
+⚠️ QUAN TRỌNG: File CreateDatabase.sql hoạt động trên mọi máy có SQL Server!
+Chỉ cần chỉnh sửa connection string trong App.config cho phù hợp với máy của bạn.
+
+=============================================
+
+BƯỚC 1: TẠO DATABASE (5 phút)
+----------------------------------------
+CÁCH 1: Dùng SQL Server Management Studio (SSMS)
+1. Mở SQL Server Management Studio (SSMS)
+2. Kết nối với SQL Server của bạn
+
+BƯỚC 1.1: Chạy CreateDatabase.sql (BẮT BUỘC)
+1. Mở file Database/CreateDatabase.sql
+2. Chạy script (F5)
+3. Kiểm tra: Database "QuanLyCongViec" đã được tạo
+4. Kiểm tra: Có 3 bảng (Users, Tasks, TaskHistory), 5 Views, 2 Triggers
+
+BƯỚC 1.2: Chạy AdditionalProcedures.sql (BẮT BUỘC)
+1. Mở file Database/AdditionalProcedures.sql
+2. Chạy script (F5)
+3. Kiểm tra: Đã tạo 11+ Stored Procedures
+   - User Management: sp_UserLogin, sp_UserRegister, sp_GetUserById, sp_UpdateUser, sp_ChangePassword
+   - Task Management: sp_GetTasksByFilter, sp_GetTaskById, sp_GetTaskHistory, sp_DeleteTask, sp_SearchTasks
+   - Statistics: sp_GetDashboardStats
+
+BƯỚC 1.3: Chạy SeedData.sql (ĐÂY LÀ DỮ LIỆU MẪU CỨ THÊM VÀO)
+1. Mở file Database/SeedData.sql
+2. Chạy script (F5)
+3. Kiểm tra: Đã chèn 4 Users và 13 Tasks
+   - Lưu ý: Chỉ chạy nếu muốn có dữ liệu mẫu để test
+   - Nếu không chạy, database sẽ trống (không có users/tasks)
+
+CÁCH 2: Dùng Azure Data Studio (Khuyến nghị)
+1. Mở Azure Data Studio
+2. Kết nối với SQL Server của bạn
+3. Thực hiện các bước 1.1, 1.2, 1.3 như trên
+
+=============================================
+LƯU Ý QUAN TRỌNG VỀ CÁC SQL SCRIPTS
+=============================================
+
+THỨ TỰ CHẠY CÁC SCRIPTS (QUAN TRỌNG!):
+1. CreateDatabase.sql        → BẮT BUỘC (Tạo database và cấu trúc cơ bản)
+2. AdditionalProcedures.sql  → BẮT BUỘC (Bổ sung stored procedures)
+3. SeedData.sql              → TÙY CHỌN (Dữ liệu mẫu để test)
+
+KHÔNG được chạy ngược thứ tự hoặc bỏ qua bước 1 và 2!
+
+=============================================
+
+BƯỚC 2: CẤU HÌNH CONNECTION STRING (1 phút)
+----------------------------------------
+1. Mở file: QuanLyCongViec/App.config
+2. Tìm dòng: <add name="QuanLyCongViecConnection"
+3. Connection string đã được cấu hình sẵn cho: TDMHORIZON\SQLEXPRESS
+   - Nếu server khác, chỉnh sửa Server name:
+   - localhost\SQLEXPRESS (SQL Server Express)
+   - localhost (SQL Server mặc định)
+   - (localdb)\MSSQLLocalDB (LocalDB)
+
+BƯỚC 3: BUILD VÀ CHẠY (2 phút)
+----------------------------------------
+1. Mở Visual Studio 2022
+2. Mở file QuanLyCongViec.sln
+3. Build project (Ctrl + Shift + B)
+4. Chạy project (F5)
+5. Nếu thấy thông báo "Kết nối database thành công!" = OK!
+
+=============================================
+KIỂM TRA NHANH
+=============================================
+
+✅ SQL Server đang chạy?
+✅ Database "QuanLyCongViec" đã tạo?
+✅ Connection string trong App.config đúng?
+✅ Project build không lỗi?
+
+Nếu tất cả = YES → Chạy thử ứng dụng!
+
+=============================================
+LỖI THƯỜNG GẶP
+=============================================
+
+Lỗi: "Cannot open database"
+→ Chạy lại CreateDatabase.sql (Bước 1.1)
+
+Lỗi: "Could not find stored procedure 'sp_UserLogin'"
+→ Chạy AdditionalProcedures.sql (Bước 1.2)
+
+Lỗi: "Invalid object name 'Users'"
+→ Chạy CreateDatabase.sql (Bước 1.1)
+
+Lỗi: "Login failed"
+→ Đổi sang Windows Authentication trong App.config
+
+Lỗi: "ConfigurationManager not found"
+→ Rebuild project (Build → Rebuild Solution)
+
+=============================================
+CẦN HỖ TRỢ?
+=============================================
+
+Xem file README_SHARE.md trong project để biết chi tiết hơn.
+
+=============================================
+
