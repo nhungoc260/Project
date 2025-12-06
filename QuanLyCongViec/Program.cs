@@ -16,7 +16,12 @@ namespace QuanLyCongViec
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            
+            // Uncomment dòng dưới để mở form tính hash (dùng để tạo script SQL)
+            // Application.Run(new frmHashPassword());
+            
+            // Form đăng nhập chính
+            Application.Run(new frmDangNhap());
         }
     }
 }

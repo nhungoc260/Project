@@ -1,0 +1,528 @@
+HỆ THỐNG QUẢN LÝ CÔNG VIỆC
+SƠ ĐỒ CÁC FORM
+
+================================================================================
+SƠ ĐỒ TỔNG QUAN LUỒNG ĐIỀU HƯỚNG GIỮA CÁC FORM
+================================================================================
+
+                    ┌─────────────────────┐
+                    │   Program.cs        │
+                    │   (Entry Point)     │
+                    └──────────┬──────────┘
+                               │
+                               │ Application.Run()
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │  frmDangNhap        │          
+                    │  (Form Đăng Nhập)   │             
+                    │                     │             
+                    │  • Username         │          ◄──┐
+                    │  • Password         │             │
+                    │  • btnDangNhap      │             │
+                    │  • btnDangKy        │             │
+                    │  • btnThoat         │             │
+                    └──────────┬──────────┘             │
+                               │                        │
+                    ┌──────────┴──────────┐             │
+                    │                     │             │
+            [Đăng ký]            [Đăng nhập thành công] │
+                    │                     │             │
+                    ▼                     ▼             │
+        ┌───────────────────┐   ┌─────────────────────┐ │
+        │  frmDangKy        │   │  frmMain            │ │
+        │  (Form Đăng Ký)   │   │  (Form Chính)       │ │
+        │                   │   │                     │ │
+        │  • Username       │   │  ┌──────────────┐   │ │
+        │  • Password       │   │  │  Menu Bar    │   │ │
+        │  • Confirm Pass   │   │  │  - Task      │   │ │
+        │  • FullName       │   │  │  - Report    │   │ │
+        │  • Email          │   │  │  - Profile   │   │ │
+        │  • btnDangKy      │   │  │  - Logout    │   │ │
+        │  • btnHuy         │   │  └──────────────┘   │ │
+        └─────────┬─────────┘   │                     │ │
+                  │             │  ┌──────────────┐   │ │
+                  │             │  │  Toolbar     │   │ │
+                  │             │  │  - Add Task  │   │ │
+                  │             │  │  - Edit Task │   │ │
+                  │             │  │  - Delete    │   │ │
+                  │             │  │  - Refresh   │   │ │
+                  │             │  └──────────────┘   │ │
+                  │             │                     │ │
+                  │             │  ┌──────────────┐   │ │
+                  │             │  │  Filter Panel│   │ │
+                  │             │  │  - Status    │   │ │
+                  │             │  │  - Priority  │   │ │
+                  │             │  │  - Category  │   │ │
+                  │             │  │  - Date      │   │ │
+                  │             │  └──────────────┘   │ │
+                  │             │                     │ │
+                  │             │  ┌──────────────┐   │ │
+                  │             │  │ DataGrid     │   │ │
+                  │             │  │ View Tasks   │   │ │
+                  │             │  └──────────────┘   │ │
+                  │             │                     │ │
+                  │             │  ┌──────────────┐   │ │
+                  │             │  │  Status Bar  │   │ │
+                  │             │  │  - Total     │   │ │
+                  │             │  │  - Completed │   │ │
+                  │             │  │  - Overdue   │   │ │
+                  │             │  └──────────────┘   │ │
+                  │             └──────────┬──────────┘ │
+                  │                        │            │
+                  │                        │            │
+                  └────────────────────────┼────────────┘
+                                           │
+                ┌──────────────────────────┼──────────────────────────┐
+                │                          │                          │
+                ▼                          ▼                          ▼
+    ┌────────────────────┐   ┌────────────────────┐   ┌────────────────────┐
+    │  frmThemSuaTask    │   │  frmBaoCao         │   │  frmProfile        │
+    │  (Thêm/Sửa Task)   │   │  (Form Báo Cáo)    │   │  (Form Profile)    │
+    │                    │   │                    │   │                    │
+    │  • Title           │   │  ┌──────────────┐  │   │  • Username        │
+    │  • Description     │   │  │  Charts      │  │   │  • FullName        │
+    │  • Status          │   │  │  - Status    │  │   │  • Email           │
+    │  • Priority        │   │  │  - Priority  │  │   │  • btnChangePass   │
+    │  • Category        │   │  │  - Category  │  │   │  • btnUpdate       │
+    │  • DueDate         │   │  │  - Timeline  │  │   │  • btnCancel       │
+    │  • btnLuu          │   │  └──────────────┘  │   └────────────────────┘
+    │  • btnHuy          │   │                    │
+    └────────────────────┘   │  ┌──────────────┐  │
+                             │  │  Statistics  │  │
+                             │  │  - Total     │  │
+                             │  │  - Done      │  │
+                             │  │  - Overdue   │  │
+                             │  │  - Due Soon  │  │
+                             │  └──────────────┘  │
+                             │                    │
+                             │  ┌──────────────┐  │
+                             │  │  Reports     │  │
+                             │  │  - Export    │  │
+                             │  │  - Print     │  │
+                             │  └──────────────┘  │
+                             └────────────────────┘
+                                       │
+                                       ▼
+                             ┌────────────────────┐
+                             │  frmLichSu         │
+                             │  (Form Lịch Sử)    │
+                             │                    │
+                             │  • Task Info       │
+                             │  • History List    │
+                             │  • Changed Date    │
+                             │  • Changed By      │
+                             │  • Change Detail   │
+                             └────────────────────┘
+
+
+================================================================================
+MÔ TẢ CHI TIẾT CÁC FORM
+================================================================================
+
+1. frmDangNhap (Form Đăng Nhập)
+   ────────────────────────────────────────────────────────────────────────
+   Chức năng: Điểm vào của ứng dụng, xác thực người dùng
+   
+   Controls chính:
+   • lblTaiKhoan: Label "Tài khoản"
+   • txtUsername: TextBox nhập tên đăng nhập
+   • lblMatKhau: Label "Mật khẩu"
+   • txtPassword: TextBox nhập mật khẩu (PasswordChar = '*')
+   • btnDangNhap: Button "Đăng nhập"
+   • btnDangKy: Button "Đăng ký" → Mở frmDangKy
+   • btnThoat: Button "Thoát" → Đóng ứng dụng
+   
+   Sự kiện:
+   • Form_Load: Test kết nối database
+   • btnDangNhap_Click: 
+     - Validate input
+     - Gọi DatabaseHelper.ExecuteStoredProcedure("sp_UserLogin")
+     - Nếu thành công → Mở frmMain và đóng frmDangNhap
+     - Nếu thất bại → Hiển thị thông báo lỗi
+   • btnDangKy_Click: Mở frmDangKy (Dialog)
+   
+   Luồng điều hướng:
+   - Đăng nhập thành công → frmMain
+   - Click "Đăng ký" → frmDangKy
+   - Click "Thoát" → Đóng ứng dụng
+
+
+2. frmDangKy (Form Đăng Ký)
+   ────────────────────────────────────────────────────────────────────────
+   Chức năng: Đăng ký tài khoản người dùng mới
+   
+   Controls chính:
+   • txtUsername: TextBox nhập tên đăng nhập
+   • txtPassword: TextBox nhập mật khẩu (PasswordChar = '*')
+   • txtConfirmPassword: TextBox xác nhận mật khẩu
+   • txtFullName: TextBox nhập họ tên
+   • txtEmail: TextBox nhập email
+   • btnDangKy: Button "Đăng ký"
+   • btnHuy: Button "Hủy" → Đóng form
+   
+   Sự kiện:
+   • btnDangKy_Click:
+     - Validate input (username, password, email format)
+     - Kiểm tra password == confirmPassword
+     - Hash password (BCrypt)
+     - Gọi DatabaseHelper.ExecuteStoredProcedure("sp_UserRegister")
+     - Nếu thành công → Hiển thị thông báo, đóng form, quay về frmDangNhap
+     - Nếu thất bại → Hiển thị thông báo lỗi
+   • btnHuy_Click: Đóng form, quay về frmDangNhap
+   
+   Luồng điều hướng:
+   - Đăng ký thành công → Quay về frmDangNhap
+   - Click "Hủy" → Quay về frmDangNhap
+
+
+3. frmMain (Form Chính - Form Quản Lý Công Việc)
+   ────────────────────────────────────────────────────────────────────────
+   Chức năng: Form chính quản lý toàn bộ công việc
+   
+   Controls chính:
+   
+   A. Menu Strip:
+      • Menu Task:
+        - Add Task → Mở frmThemSuaTask (mode: Add)
+        - Edit Task → Mở frmThemSuaTask (mode: Edit) với task được chọn
+        - Delete Task → Xóa task được chọn (Soft Delete)
+        - Refresh → Tải lại danh sách tasks
+      • Menu Report:
+        - View Statistics → Mở frmBaoCao
+        - View History → Mở frmLichSu
+      • Menu Profile:
+        - My Profile → Mở frmProfile
+        - Change Password → Mở dialog đổi mật khẩu
+      • Menu Help:
+        - About → Hiển thị thông tin về ứng dụng
+      • Menu Logout:
+        - Logout → Đăng xuất, quay về frmDangNhap
+   
+   B. Toolbar (ToolStrip):
+      • btnAdd: Button "Thêm" → Mở frmThemSuaTask (mode: Add)
+      • btnEdit: Button "Sửa" → Mở frmThemSuaTask (mode: Edit)
+      • btnDelete: Button "Xóa" → Xóa task (Soft Delete)
+      • btnRefresh: Button "Làm mới" → Tải lại danh sách
+      • Separator
+      • btnReport: Button "Báo cáo" → Mở frmBaoCao
+   
+   C. Filter Panel (Panel):
+      • lblStatus: Label "Trạng thái"
+      • cmbStatus: ComboBox (Tất cả, Todo, Doing, Done)
+      • lblPriority: Label "Mức độ ưu tiên"
+      • cmbPriority: ComboBox (Tất cả, High, Medium, Low)
+      • lblCategory: Label "Danh mục"
+      • cmbCategory: ComboBox (Tất cả, Work, Personal)
+      • lblDueDate: Label "Hạn chót"
+      • dtpFromDate: DateTimePicker "Từ ngày"
+      • dtpToDate: DateTimePicker "Đến ngày"
+      • btnFilter: Button "Lọc" → Áp dụng bộ lọc
+      • btnClearFilter: Button "Xóa lọc" → Reset bộ lọc
+   
+   D. DataGridView (dgvTasks):
+      Columns:
+      - ID (ẩn)
+      - Title (Tiêu đề)
+      - Description (Mô tả) - có thể ẩn
+      - Status (Trạng thái)
+      - Priority (Mức độ ưu tiên)
+      - Category (Danh mục)
+      - DueDate (Hạn chót)
+      - CreatedDate (Ngày tạo)
+      - CompletedDate (Ngày hoàn thành)
+      
+      Events:
+      - CellDoubleClick → Mở frmThemSuaTask (mode: Edit) với task được chọn
+      - SelectionChanged → Cập nhật button enabled/disabled
+   
+   E. Status Bar (StatusStrip):
+      • lblTotal: Label "Tổng: 0"
+      • lblTodo: Label "Todo: 0"
+      • lblDoing: Label "Doing: 0"
+      • lblDone: Label "Done: 0"
+      • lblOverdue: Label "Quá hạn: 0" (màu đỏ)
+      • lblDueSoon: Label "Sắp đến hạn: 0" (màu vàng)
+   
+   Sự kiện:
+   • Form_Load:
+     - Load danh sách tasks của user hiện tại
+     - Cập nhật status bar
+   • btnAdd_Click: Mở frmThemSuaTask (mode: Add)
+   • btnEdit_Click: Mở frmThemSuaTask (mode: Edit) với task được chọn
+   • btnDelete_Click: Xóa task (Soft Delete) với xác nhận
+   • btnRefresh_Click: Tải lại danh sách tasks
+   • btnFilter_Click: Áp dụng bộ lọc và load lại danh sách
+   • cmbStatus_SelectedIndexChanged: Auto filter (nếu có auto-filter)
+   
+   Luồng điều hướng:
+   - Add Task → frmThemSuaTask (mode: Add)
+   - Edit Task → frmThemSuaTask (mode: Edit)
+   - View Report → frmBaoCao
+   - View History → frmLichSu
+   - My Profile → frmProfile
+   - Logout → frmDangNhap
+
+
+4. frmThemSuaTask (Form Thêm/Sửa Công Việc)
+   ────────────────────────────────────────────────────────────────────────
+   Chức năng: Thêm mới hoặc chỉnh sửa công việc
+   
+   Controls chính:
+   • lblTitle: Label "Tiêu đề *"
+   • txtTitle: TextBox nhập tiêu đề (Required)
+   • lblDescription: Label "Mô tả"
+   • txtDescription: TextBox nhập mô tả (Multiline = true)
+   • lblStatus: Label "Trạng thái *"
+   • cmbStatus: ComboBox (Todo, Doing, Done) (Required)
+   • lblPriority: Label "Mức độ ưu tiên *"
+   • cmbPriority: ComboBox (High, Medium, Low) (Required)
+   • lblCategory: Label "Danh mục *"
+   • cmbCategory: ComboBox (Work, Personal) (Required)
+   • lblDueDate: Label "Hạn chót *"
+   • dtpDueDate: DateTimePicker chọn ngày hạn chót (Required)
+   • btnLuu: Button "Lưu"
+   • btnHuy: Button "Hủy" → Đóng form
+   
+   Mode:
+   • Add Mode: Form title = "Thêm công việc mới", các field trống
+   • Edit Mode: Form title = "Chỉnh sửa công việc", load dữ liệu task vào form
+   
+   Sự kiện:
+   • Form_Load:
+     - Nếu Edit Mode: Load dữ liệu task vào form
+     - Nếu Add Mode: Set default values
+   • btnLuu_Click:
+     - Validate input (required fields)
+     - Nếu Add Mode: Gọi sp_CreateTask
+     - Nếu Edit Mode: Gọi sp_UpdateTask
+     - Nếu thành công → Đóng form, refresh frmMain
+     - Nếu thất bại → Hiển thị thông báo lỗi
+   • btnHuy_Click: Đóng form (hỏi xác nhận nếu có thay đổi)
+   
+   Luồng điều hướng:
+   - Lưu thành công → Quay về frmMain (refresh danh sách)
+   - Click "Hủy" → Quay về frmMain
+
+
+5. frmBaoCao (Form Báo Cáo Thống Kê)
+   ────────────────────────────────────────────────────────────────────────
+   Chức năng: Hiển thị báo cáo và thống kê công việc
+   
+   Controls chính:
+   
+   A. Tab Control (tabControl):
+      Tab 1: Tổng quan
+      • Chart Status: Pie/Bar chart thống kê theo trạng thái
+      • Chart Priority: Pie/Bar chart thống kê theo mức độ ưu tiên
+      • Chart Category: Pie/Bar chart thống kê theo danh mục
+      • lblTotalTasks: Label "Tổng số công việc: X"
+      • lblCompletedTasks: Label "Đã hoàn thành: X"
+      • lblOverdueTasks: Label "Quá hạn: X"
+      • lblDueSoonTasks: Label "Sắp đến hạn: X"
+      • lblCompletionRate: Label "Tỷ lệ hoàn thành: X%"
+      
+      Tab 2: Chi tiết
+      • dgvTasks: DataGridView hiển thị danh sách tasks
+        - Có thể filter, sort
+        - Double click để xem chi tiết
+      
+      Tab 3: Quá hạn & Sắp đến hạn
+      • dgvOverdueTasks: DataGridView công việc quá hạn
+      • dgvDueSoonTasks: DataGridView công việc sắp đến hạn (trong 3 ngày)
+   
+   B. Toolbar:
+      • btnRefresh: Button "Làm mới" → Tải lại dữ liệu
+      • btnExport: Button "Xuất Excel" → Export báo cáo ra file Excel
+      • btnPrint: Button "In" → In báo cáo
+      • btnClose: Button "Đóng" → Đóng form
+   
+   Sự kiện:
+   • Form_Load:
+     - Load thống kê từ database
+     - Load charts với dữ liệu từ Views (vw_StatusStats, vw_PriorityStats, vw_CategoryStats)
+     - Load danh sách tasks quá hạn và sắp đến hạn
+   • btnRefresh_Click: Tải lại tất cả dữ liệu
+   • btnExport_Click: Export dữ liệu ra Excel
+   • btnPrint_Click: Print báo cáo
+   
+   Luồng điều hướng:
+   - Click "Đóng" → Quay về frmMain
+
+
+6. frmProfile (Form Thông Tin Cá Nhân)
+   ────────────────────────────────────────────────────────────────────────
+   Chức năng: Xem và cập nhật thông tin cá nhân
+   
+   Controls chính:
+   • lblUsername: Label "Tên đăng nhập"
+   • txtUsername: TextBox (ReadOnly) - hiển thị username
+   • lblFullName: Label "Họ và tên *"
+   • txtFullName: TextBox nhập họ tên (Required)
+   • lblEmail: Label "Email *"
+   • txtEmail: TextBox nhập email (Required)
+   • lblCreatedDate: Label "Ngày tạo"
+   • txtCreatedDate: TextBox (ReadOnly) - hiển thị ngày tạo
+   • lblLastLogin: Label "Lần đăng nhập cuối"
+   • txtLastLogin: TextBox (ReadOnly) - hiển thị lần đăng nhập cuối
+   • btnChangePassword: Button "Đổi mật khẩu" → Mở dialog đổi mật khẩu
+   • btnUpdate: Button "Cập nhật" → Cập nhật thông tin
+   • btnCancel: Button "Hủy" → Đóng form
+   
+   Sự kiện:
+   • Form_Load:
+     - Load thông tin user hiện tại từ database
+     - Hiển thị vào các controls
+   • btnUpdate_Click:
+     - Validate input (email format, fullname)
+     - Gọi sp_UpdateUser
+     - Nếu thành công → Hiển thị thông báo, refresh thông tin
+     - Nếu thất bại → Hiển thị thông báo lỗi
+   • btnChangePassword_Click:
+     - Mở dialog đổi mật khẩu
+     - Nhập mật khẩu cũ, mật khẩu mới, xác nhận mật khẩu mới
+     - Validate và gọi sp_ChangePassword
+   • btnCancel_Click: Đóng form
+   
+   Luồng điều hướng:
+   - Cập nhật thành công → Cập nhật thông tin hiển thị
+   - Click "Hủy" → Quay về frmMain
+
+
+7. frmLichSu (Form Lịch Sử Thay Đổi)
+   ────────────────────────────────────────────────────────────────────────
+   Chức năng: Xem lịch sử thay đổi của công việc
+   
+   Controls chính:
+   • lblTaskInfo: Label "Thông tin công việc"
+   • txtTaskTitle: TextBox (ReadOnly) - hiển thị tiêu đề task
+   • txtTaskDescription: TextBox (ReadOnly, Multiline) - hiển thị mô tả task
+   • lblHistory: Label "Lịch sử thay đổi"
+   • dgvHistory: DataGridView hiển thị lịch sử
+      Columns:
+      - ID (ẩn)
+      - ActionDate (Ngày thay đổi)
+      - Action (Hành động: Created, Updated, Completed, Deleted)
+      - ChangedBy (Người thay đổi)
+      - OldStatus (Trạng thái cũ)
+      - NewStatus (Trạng thái mới)
+      - Notes (Ghi chú)
+   • btnRefresh: Button "Làm mới" → Tải lại lịch sử
+   • btnClose: Button "Đóng" → Đóng form
+   
+   Sự kiện:
+   • Form_Load:
+     - Nhận TaskID từ frmMain
+     - Load thông tin task
+     - Load lịch sử thay đổi từ TaskHistory
+   • btnRefresh_Click: Tải lại lịch sử
+   • dgvHistory_SelectionChanged: Hiển thị chi tiết thay đổi (nếu có)
+   
+   Luồng điều hướng:
+   - Click "Đóng" → Quay về frmMain
+
+
+================================================================================
+LUỒNG ĐIỀU HƯỚNG CHÍNH CỦA ỨNG DỤNG
+================================================================================
+
+1. Luồng Đăng Nhập:
+   Program.cs → frmDangNhap → [Đăng nhập thành công] → frmMain
+                                   ↓
+                            [Click Đăng ký] → frmDangKy → [Đăng ký thành công] → frmDangNhap
+
+2. Luồng Quản Lý Công Việc:
+   frmMain → [Add Task] → frmThemSuaTask (Add) → [Lưu] → frmMain (refresh)
+   frmMain → [Edit Task] → frmThemSuaTask (Edit) → [Lưu] → frmMain (refresh)
+   frmMain → [Delete Task] → [Xác nhận] → frmMain (refresh)
+   frmMain → [Double Click Task] → frmThemSuaTask (Edit) → [Lưu] → frmMain (refresh)
+
+3. Luồng Báo Cáo:
+   frmMain → [View Report] → frmBaoCao → [Đóng] → frmMain
+   frmMain → [View History] → frmLichSu → [Đóng] → frmMain
+
+4. Luồng Quản Lý Profile:
+   frmMain → [My Profile] → frmProfile → [Cập nhật] → frmProfile (refresh)
+   frmMain → [My Profile] → frmProfile → [Đổi mật khẩu] → Dialog → frmProfile
+
+5. Luồng Đăng Xuất:
+   frmMain → [Logout] → [Xác nhận] → frmDangNhap
+
+
+================================================================================
+MỐI QUAN HỆ GIỮA CÁC FORM VÀ DATABASE
+================================================================================
+
+frmDangNhap ──┐
+              ├──→ DatabaseHelper ──→ SQL Server (sp_UserLogin)
+              └──→ Users Table
+
+frmDangKy ────┐
+              ├──→ DatabaseHelper ──→ SQL Server (sp_UserRegister)
+              └──→ Users Table
+
+frmMain ──────┐
+              ├──→ DatabaseHelper ──→ SQL Server
+              │   • sp_GetTasksByFilter ──→ Tasks Table
+              │   • sp_GetDashboardStats ──→ Views (vw_StatusStats, vw_PriorityStats...)
+              │   • sp_DeleteTask ──→ Tasks Table + TaskHistory (Trigger)
+              └──→ Views (vw_TaskOverdueAndDueSoon, vw_UserTaskSummary)
+
+frmThemSuaTask ──┐
+                 ├──→ DatabaseHelper ──→ SQL Server
+                 │   • sp_CreateTask ──→ Tasks Table + TaskHistory (Trigger tr_Tasks_Insert)
+                 │   • sp_UpdateTask ──→ Tasks Table + TaskHistory (Trigger tr_Tasks_Update)
+                 └──→ Tasks Table
+
+frmBaoCao ──────┐
+                ├──→ DatabaseHelper ──→ SQL Server
+                │   • sp_GetReportData ──→ Views
+                │   • vw_StatusStats ──→ Tasks Table
+                │   • vw_PriorityStats ──→ Tasks Table
+                │   • vw_CategoryStats ──→ Tasks Table
+                │   • vw_TaskOverdueAndDueSoon ──→ Tasks Table
+                └──→ Views
+
+frmProfile ─────┐
+                ├──→ DatabaseHelper ──→ SQL Server
+                │   • sp_GetUserById ──→ Users Table
+                │   • sp_UpdateUser ──→ Users Table
+                │   • sp_ChangePassword ──→ Users Table
+                └──→ Users Table
+
+frmLichSu ──────┐
+                ├──→ DatabaseHelper ──→ SQL Server
+                │   • sp_GetTaskHistory ──→ TaskHistory Table
+                │   • sp_GetTaskById ──→ Tasks Table
+                └──→ TaskHistory Table + Tasks Table
+
+
+================================================================================
+GHI CHÚ THIẾT KẾ
+================================================================================
+
+1. Tất cả các form đều sử dụng DatabaseHelper để truy cập database, không có 
+   SQL code trực tiếp trong form (tuân thủ Clean Code - Separation of Concerns)
+
+2. Tất cả các form đều có error handling để xử lý lỗi database hoặc validation
+
+3. Form chính (frmMain) là MDI Parent hoặc Standalone form tùy thiết kế
+
+4. Các form con (frmThemSuaTask, frmBaoCao, frmProfile, frmLichSu) có thể mở 
+   dưới dạng Dialog (ShowDialog) hoặc Form thường (Show) tùy yêu cầu
+
+5. Tất cả các form đều có validation input trước khi gửi lên database
+
+6. Tất cả các thao tác quan trọng (xóa, đăng xuất) đều có xác nhận từ người dùng
+
+7. Form có thể được mở rộng thêm các tính năng:
+   - Search/Filter nâng cao
+   - Drag & Drop để sắp xếp task
+   - Reminder/Notification
+   - Export/Import tasks
+   - Tags/Labels cho tasks
+
+================================================================================
+KẾT THÚC SƠ ĐỒ CÁC FORM
+================================================================================
+
