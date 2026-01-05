@@ -48,6 +48,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataAccess\DatabaseHelper.cs" />
+    <Compile Include="frmChiTietTask.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChiTietTask.Designer.cs">
+      <DependentUpon>frmChiTietTask.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmHuongDan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmHuongDan.Designer.cs">
+      <DependentUpon>frmHuongDan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmThongBao.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmThongBao.Designer.cs">
+      <DependentUpon>frmThongBao.cs</DependentUpon>
+    </Compile>
     <Compile Include="frrmMain.cs">
       <SubType>Form</SubType>
     </Compile>
